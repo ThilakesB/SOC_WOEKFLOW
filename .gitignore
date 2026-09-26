@@ -1,0 +1,10 @@
+.env
+__pycache__/
+*.pyc
+node_modules/
+dist/
+.vite/
+incidents.json
+data/*.db
+*.tsbuildinfo
+.env.local

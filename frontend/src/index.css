@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Single elevation ramp. Every surface derives from these four. */
+    --surface-base: 9 11 15;
+    --surface-raised: 16 20 26;
+    --surface-elevated: 22 27 35;
+    --surface-overlay: 30 36 46;
+
+    --border-subtle: 30 36 45;
+    --border-default: 42 50 62;
+    --border-strong: 60 71 86;
+
+    --text-primary: 229 234 240;
+    --text-secondary: 156 166 181;
+    --text-muted: 108 118 133;
+    --text-inverse: 9 11 15;
+
+    /* Severity ramp — ordered, perceptually distinct, readable on base. */
+    --sev-critical: 244 63 94;
+    --sev-high: 251 146 60;
+    --sev-medium: 250 204 21;
+    --sev-low: 56 189 248;
+    --sev-info: 100 116 139;
+
+    --verdict-tp: 244 63 94;
+    --verdict-suspicious: 250 204 21;
+    --verdict-benign: 34 197 94;
+    --verdict-unknown: 100 116 139;
+
+    --accent: 45 212 191;
+    --accent-soft: 19 78 74;
+    --accent-ink: 4 47 46;
+  }
+
+  * {
+    @apply border-line-subtle;
+  }
+
+  html {
+    @apply antialiased;
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-base text-ink font-sans text-base;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'tnum';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Numeric data must align in tables and meters. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  :focus-visible {
+    @apply outline-none shadow-focus rounded;
+  }
+
+  ::selection {
+    background: rgb(var(--accent) / 0.28);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgb(var(--surface-base));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--border-default));
+    border-radius: 9999px;
+    border: 2px solid rgb(var(--surface-base));
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--border-strong));
+  }
+}
+
+@layer components {
+  .panel {
+    @apply bg-surface rounded-lg shadow-panel;
+  }
+
+  .panel-header {
+    @apply flex items-center gap-2 px-4 py-3 border-b border-line-subtle;
+  }
+
+  .panel-title {
+    @apply text-xs font-semibold uppercase tracking-wider text-ink-secondary;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded font-medium
+           transition-colors duration-150 select-none
+           disabled:opacity-45 disabled:pointer-events-none whitespace-nowrap;
+  }
+  .btn-md {
+    @apply h-9 px-3.5 text-sm;
+  }
+  .btn-sm {
+    @apply h-7 px-2.5 text-xs;
+  }
+  .btn-primary {
+    @apply btn bg-accent text-accent-ink hover:bg-accent/85 active:bg-accent/75 font-semibold;
+  }
+  .btn-ghost {
+    @apply btn text-ink-secondary hover:text-ink hover:bg-elevated border border-line;
+  }
+  .btn-quiet {
+    @apply btn text-ink-muted hover:text-ink hover:bg-elevated;
+  }
+  .btn-danger {
+    @apply btn bg-critical/15 text-critical border border-critical/35 hover:bg-critical/25;
+  }
+
+  /* Form controls */
+  .field {
+    @apply w-full rounded border border-line bg-base px-3 py-2 text-sm text-ink
+           placeholder:text-ink-muted transition-colors
+           focus:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent/25;
+  }
+
+  .label {
+    @apply block text-2xs font-semibold uppercase tracking-wider text-ink-muted mb-1.5;
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-2xs
+           font-semibold uppercase tracking-wider;
+  }
+
+  /* Monospace treatment for identifiers, IOCs, queries */
+  .code {
+    @apply font-mono text-xs text-ink-secondary bg-base/70 border border-line-subtle
+           rounded px-1.5 py-0.5;
+  }
+
+  .kv {
+    @apply grid grid-cols-[minmax(0,7rem)_1fr] gap-x-3 gap-y-1 text-xs items-baseline;
+  }
+  .kv dt {
+    @apply text-ink-muted;
+  }
+  .kv dd {
+    @apply text-ink-secondary font-mono text-2xs break-all;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Skeleton shimmer without a JS timer. */
+  .skeleton {
+    @apply relative overflow-hidden bg-elevated rounded;
+  }
+  .skeleton::after {
+    @apply absolute inset-0 animate-shimmer;
+    content: '';
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.045), transparent);
+    transform: translateX(-100%);
+  }
+}
